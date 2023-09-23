@@ -20,12 +20,13 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		batch = new SpriteBatch();
 		WIDTH = Gdx.graphics.getWidth();
 		HEIGHT = Gdx.graphics.getHeight();
 		shape = new ShapeRenderer();
 		camera = new OrthographicCamera();
 		viewport = new FitViewport(WIDTH, HEIGHT, camera);
-		batch = new SpriteBatch();
+
 		utils = new Utils();
 		utils.load_zones("/home/zaigard/Projects/SpSityZone/assets/Города.xlsx",true);
 	}
