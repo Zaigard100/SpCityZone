@@ -46,6 +46,9 @@ project(":desktop") {
     dependencies {
         implementation project(":core")
         implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
+        implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
+        implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+        implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         
@@ -60,6 +63,7 @@ project(":core") {
         implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
         implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
         implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+        implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         
     }
