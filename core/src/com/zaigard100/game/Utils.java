@@ -1,15 +1,10 @@
 package com.zaigard100.game;
 
-import com.badlogic.gdx.graphics.Color;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -42,6 +37,7 @@ public class Utils {
         while (rowIter.hasNext()) {
             XSSFRow row = (XSSFRow) rowIter.next();
             try {
+                //поменять колонки при изменении формата храненеия данных эксель
                 zones.add(new Zone(
                         row.getCell(0).getRichStringCellValue().getString(),
                         row.getCell(1).getRichStringCellValue().getString(),
@@ -51,12 +47,11 @@ public class Utils {
                         (int) row.getCell(5).getNumericCellValue(),
                         (int) row.getCell(6).getNumericCellValue(),
                         (int) row.getCell(7).getNumericCellValue(),
-                        (int) row.getCell(8).getNumericCellValue(),
-                        Color.GREEN
+                        (int) row.getCell(8).getNumericCellValue()
                 ));
             }catch (IllegalStateException e){
                 System.out.print("IllegalStatement: ");
-                System.out.println(row.getCell(0).getRichStringCellValue().getString());
+                System.out.println(row.getCell(0).getRichStringCellValue().getString());//какие-то города пропущены по этому да
             }catch (NullPointerException e){
                 System.out.print("NullPointer: ");
                 System.out.println(row.getCell(0).getRichStringCellValue().getString());

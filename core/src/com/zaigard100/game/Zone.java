@@ -17,7 +17,7 @@ public class Zone {
     Color color;
     boolean just = false;
     boolean filled = false;
-    public Zone(String name, String description, boolean isCity, String owner, int over_x, int over_y, int radius, int nether_x, int nether_y,Color color) {
+    public Zone(String name, String description, boolean isCity, String owner, int over_x, int over_y, int radius, int nether_x, int nether_y) {
         this.name = name;
         this.description = description;
         this.isCity = isCity;
@@ -28,11 +28,10 @@ public class Zone {
         this.nether_x = nether_x;
         this.nether_y = nether_y;
         this.color = new Color((float) Math.random(),(float) Math.random(),(float) Math.random(),1.0f);
-        //System.out.println(toString());
         System.out.println(((over_x-radius)/10)+" "+(over_x-radius)/10);
     }
 
-    public void render(ShapeRenderer shape, Camera camera,float SCALE,int dx, int dy) {
+    public void render(ShapeRenderer shape, float SCALE,int dx, int dy) {
         if(filled){
             shape.begin(ShapeRenderer.ShapeType.Filled);
         }else {
@@ -40,13 +39,14 @@ public class Zone {
         }
         shape.setColor(color);
         shape.rect((over_x-radius)/SCALE+Gdx.graphics.getWidth()/2+dx,(-over_y-radius)/SCALE+Gdx.graphics.getHeight()/2+dy,(radius*2)/SCALE,(radius*2)/SCALE);
+        //shape.circle((over_x-radius)/SCALE+Gdx.graphics.getWidth()/2+dx,(-over_y-radius)/SCALE+Gdx.graphics.getHeight()/2+dy,radius/SCALE);
         shape.end();
         int getY = Gdx.graphics.getHeight() - Gdx.input.getY();
         if(Gdx.input.isTouched()) {
             if(!just) {
                 if (Gdx.input.getX() > ((over_x - radius) / SCALE + Gdx.graphics.getWidth() / 2+dx) && Gdx.input.getX() < ((over_x - radius) / SCALE + Gdx.graphics.getWidth() / 2 + dx) + (radius * 2) / SCALE) {
                     if (getY > ((-over_y - radius) / SCALE + Gdx.graphics.getHeight() / 2+ dy) && getY < ((-over_y - radius) / SCALE + Gdx.graphics.getHeight() / 2+dy) + (radius * 2) / SCALE) {
-                        System.out.println(toString());
+                        System.out.println(toString());// вывод инфы на кликнутую зону
                         System.out.println((Gdx.input.getX()-dx-Gdx.graphics.getWidth() / 2)*SCALE+" "+((getY-dy-Gdx.graphics.getHeight() / 2)*SCALE));
                     }
                 }

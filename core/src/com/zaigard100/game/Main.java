@@ -13,27 +13,28 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Main extends ApplicationAdapter {
 	private ShapeRenderer shape;
-	private FitViewport viewport;
-	private OrthographicCamera camera;
 	SpriteBatch batch;
 
 	Utils utils;
 	public int WIDTH,HEIGHT;
 	int ZOOM = 80;
-	int WALL = 70000;
-	int dx = 0;
-	int dy = 0;
+	int WALL = 40000; //барьер
+	int old_x = 0;// 70-108 строки
+	int old_y = 0;
+
+	//смещения
+	int dx = 0; //клавиши A D
+	int dy = 0; //клавишы W S
+	int speed = 2; //скорость управления регулеровка клавиши Q E
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		WIDTH = Gdx.graphics.getWidth();
 		HEIGHT = Gdx.graphics.getHeight();
 		shape = new ShapeRenderer();
-		camera = new OrthographicCamera();
-		viewport = new FitViewport(WIDTH, HEIGHT, camera);
 
 		utils = new Utils();
-		utils.load_zones("/home/zaigard/Projects/SpSityZone/assets/Города.xlsx",true);
+		utils.load_zones("/home/zaigard/Projects/SpSityZone/assets/Города.xlsx",true); //Ексель файл по надобность добавить новые города
 
 	}
 
@@ -44,51 +45,85 @@ public class Main extends ApplicationAdapter {
 
 			for(Zone zone:utils.getZones()) {
 
-				zone.render(shape, camera, ZOOM,dx,dy);
+				zone.render(shape, ZOOM,dx,dy);
 
 				if(zone.getOwner().equals("Zaigard100")) {
 					zone.setFilled(true);
-					zone.render(shape, camera, ZOOM,dx,dy);
+					zone.render(shape, ZOOM,dx,dy);
 				}
 			}
 
 			shape.begin(ShapeRenderer.ShapeType.Line);
 			shape.setColor(Color.GREEN);
-			shape.line(Gdx.graphics.getWidth()+dx,Gdx.graphics.getHeight()/2+dy,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
+			shape.line(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()/2+dy,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
 			shape.setColor(Color.BLUE);
-			shape.line(dx,Gdx.graphics.getHeight()/2+dy,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
+			shape.line(0,Gdx.graphics.getHeight()/2+dy,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
 			shape.setColor(Color.RED);
-			shape.line(Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()+dy,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
+			shape.line(Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight(),Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
 			shape.setColor(Color.YELLOW);
-			shape.line(Gdx.graphics.getWidth()/2+dx,dy,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
+			shape.line(Gdx.graphics.getWidth()/2+dx,0,Gdx.graphics.getWidth()/2+dx,Gdx.graphics.getHeight()/2+dy);
 			shape.setColor(Color.GREEN);
-			shape.rect(Gdx.graphics.getWidth()/2-(WALL/2)/ZOOM+dx,Gdx.graphics.getHeight()/2-(WALL/2)/ZOOM+dy,WALL/ZOOM,WALL/ZOOM);
+			shape.rect(Gdx.graphics.getWidth()/2-WALL/ZOOM+dx,Gdx.graphics.getHeight()/2-WALL/ZOOM+dy,WALL*2/ZOOM,WALL*2/ZOOM);
 			shape.end();
 
 		batch.end();
 		if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-			ZOOM++;
+			old_x = dx*ZOOM;
+			old_y = dy*ZOOM;
+			ZOOM--;
+			if(ZOOM <= 0){
+				ZOOM = 1;
+			}
+			dx= old_x/ZOOM;//нармализация координат после зума
+			dy= old_y/ZOOM;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
-			ZOOM--;
+			old_x = dx*ZOOM;
+			old_y = dy*ZOOM;
+			ZOOM++;
+			if(ZOOM <= 0){
+				ZOOM = 1;
+			}
+			dx= old_x/ZOOM;
+			dy= old_y/ZOOM;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ADD)){
-			ZOOM+=10;
+			old_x = dx*ZOOM;
+			old_y = dy*ZOOM;
+			ZOOM-=10;
+			if(ZOOM <= 0){
+				ZOOM = 1;
+			}
+			dx= old_x/ZOOM;
+			dy= old_y/ZOOM;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_SUBTRACT)){
-			ZOOM-=10;
+			old_x = dx*ZOOM;
+			old_y = dy*ZOOM;
+			ZOOM+=10;
+			if(ZOOM <= 0){
+				ZOOM = 1;
+			}
+			dx= old_x/ZOOM;
+			dy= old_y/ZOOM;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-			dy++;
+			dy-=speed;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.S)){
-			dy--;
+			dy+=speed;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			dx--;
+			dx+=speed;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			dx++;
+			dx-=speed;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+			speed--;
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.E)){
+			speed++;
 		}
 	}
 
