@@ -32,22 +32,22 @@ public class Zone {
         System.out.println(((over_x-radius)/10)+" "+(over_x-radius)/10);
     }
 
-    public void render(ShapeRenderer shape, Camera camera,float SCALE) {
+    public void render(ShapeRenderer shape, Camera camera,float SCALE,int dx, int dy) {
         if(filled){
             shape.begin(ShapeRenderer.ShapeType.Filled);
         }else {
             shape.begin(ShapeRenderer.ShapeType.Line);
         }
         shape.setColor(color);
-        shape.rect((over_x-radius)/SCALE+Gdx.graphics.getWidth()/2,(-over_y-radius)/SCALE+Gdx.graphics.getHeight()/2,(radius*2)/SCALE,(radius*2)/SCALE);
+        shape.rect((over_x-radius)/SCALE+Gdx.graphics.getWidth()/2+dx,(-over_y-radius)/SCALE+Gdx.graphics.getHeight()/2+dy,(radius*2)/SCALE,(radius*2)/SCALE);
         shape.end();
         int getY = Gdx.graphics.getHeight() - Gdx.input.getY();
         if(Gdx.input.isTouched()) {
             if(!just) {
-                if (Gdx.input.getX() > ((over_x - radius) / SCALE + Gdx.graphics.getWidth() / 2) && Gdx.input.getX() < ((over_x - radius) / SCALE + Gdx.graphics.getWidth() / 2) + (radius * 2) / SCALE) {
-                    if (getY > ((-over_y - radius) / SCALE + Gdx.graphics.getHeight() / 2) && getY < ((-over_y - radius) / SCALE + Gdx.graphics.getHeight() / 2) + (radius * 2) / SCALE) {
+                if (Gdx.input.getX() > ((over_x - radius) / SCALE + Gdx.graphics.getWidth() / 2+dx) && Gdx.input.getX() < ((over_x - radius) / SCALE + Gdx.graphics.getWidth() / 2 + dx) + (radius * 2) / SCALE) {
+                    if (getY > ((-over_y - radius) / SCALE + Gdx.graphics.getHeight() / 2+ dy) && getY < ((-over_y - radius) / SCALE + Gdx.graphics.getHeight() / 2+dy) + (radius * 2) / SCALE) {
                         System.out.println(toString());
-                        System.out.println((Gdx.input.getX()-Gdx.graphics.getWidth() / 2)*SCALE+" "+((getY-Gdx.graphics.getHeight() / 2)*SCALE));
+                        System.out.println((Gdx.input.getX()-dx-Gdx.graphics.getWidth() / 2)*SCALE+" "+((getY-dy-Gdx.graphics.getHeight() / 2)*SCALE));
                     }
                 }
             }
